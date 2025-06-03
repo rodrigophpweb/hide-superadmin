@@ -227,3 +227,29 @@ HTML;
     }
 });
 
+
+/**
+ * Hide the "Endereço de email de administração" field for all users except "rodrigo"
+ * This function hides the "Endereço de email de administração" field in the General Settings page for all users except the user "rodrigo".
+ * It is hooked to the 'admin_head-options-general.php' action.
+ * @since 1.0.0
+ * @link https://developer.wordpress.org/reference/hooks/admin_head-options-general.php/
+ * @see https://developer.wordpress.org/reference/functions/wp_get_current_user/
+ */
+add_action('admin_head-options-general.php', function () {
+    $current_user = wp_get_current_user();
+
+    if ($current_user->user_login !== 'rodrigo') {
+        echo <<<HTML
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Seletor preciso para remover o campo de email de administração
+    const emailRow = document.querySelector('#wpbody-content > div.wrap > form > table:nth-child(5) > tbody > tr:nth-child(6)');
+    if (emailRow) {
+        emailRow.remove();
+    }
+});
+</script>
+HTML;
+    }
+});
