@@ -11,7 +11,10 @@
  * Domain Path: /languages
  * Requires at least: 5.0
  * Requires PHP: 7.0
+ * GitHub Plugin URI: https://github.com/rodrigophpweb/hide-superadmin
+ * GitHub Branch: main
  */
+
 
 /**
  * Hide specific user from user queries for all users except "rodrigo"
@@ -69,6 +72,8 @@ add_action('admin_menu', function () {
             'ai1wm_export',
             'ai1wm_backups',
             'bing-url-submission',
+            'github-updater/github-updater.php',
+            'git-updater/git-updater.php',
             'loginpress-settings',
             'wprocket',
             'acf-options',
@@ -247,6 +252,27 @@ document.addEventListener('DOMContentLoaded', function () {
     const emailRow = document.querySelector('#wpbody-content > div.wrap > form > table:nth-child(5) > tbody > tr:nth-child(6)');
     if (emailRow) {
         emailRow.remove();
+    }
+});
+</script>
+HTML;
+    }
+});
+
+/**
+ * Hide Git Updater notification for all users except "rodrigo"
+ */
+add_action('admin_head', function () {
+    $current_user = wp_get_current_user();
+
+    if ($current_user->user_login !== 'rodrigo') {
+        echo <<<HTML
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Remove notificação do Git Updater
+    const gitUpdaterNotice = document.querySelector('.fs-notice.fs-slug-git-updater');
+    if (gitUpdaterNotice) {
+        gitUpdaterNotice.remove();
     }
 });
 </script>
