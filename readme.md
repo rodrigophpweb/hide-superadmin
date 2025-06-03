@@ -80,44 +80,56 @@ The plugin uses WordPress hooks like `pre_user_query`, `admin_menu`, `admin_head
 
    ```bash
    git clone https://github.com/seuusuario/hide-superadmin.git
+   ```
 
-2. **PT-BR:** Coloque a pasta em wp-content/plugins/
-   **EN:** Place the folder in wp-content/plugins/
+2. **PT-BR:** Coloque a pasta em `wp-content/plugins/`  
+   **EN:** Place the folder in `wp-content/plugins/`
 
-3. **PT-BR:** Ative o plugin no painel WordPress
+3. **PT-BR:** Ative o plugin no painel WordPress  
    **EN:** Activate the plugin in the WordPress dashboard
 
-4. **PT-BR:** Certifique-se de que o usuário rodrigo existe
-   **EN:** Make sure the rodrigo user exists
+4. **PT-BR:** Certifique-se de que o usuário `rodrigo` existe  
+   **EN:** Make sure the `rodrigo` user exists
 
 ---
 
 ## ⚠️ Observações / Notes
 
-- **PT-BR:** O nome de usuário deve ser exatamente rodrigo.
-  **EN:** The username must be exactly rodrigo.
+- **PT-BR:** O nome de usuário deve ser exatamente `rodrigo`.  
+  **EN:** The username must be exactly `rodrigo`.
 
-- **PT-BR:** Você pode modificar o nome no código para proteger outro usuário.
+- **PT-BR:** Você pode modificar o nome no código para proteger outro usuário.  
   **EN:** You can change the name in the code to protect another user.
 
-- **PT-BR:** Este plugin é voltado para segurança leve e organização do painel.
+- **PT-BR:** Este plugin é voltado para segurança leve e organização do painel.  
   **EN:** This plugin focuses on light admin security and panel organization.
 
 ---
 
 ## 📄 Licença / License
 
-**PT-BR:**
-Este plugin está licenciado sob a GPLv2.
-Mais informações: https://www.gnu.org/licenses/gpl-2.0.html
+**PT-BR:**  
+Este plugin está licenciado sob a GPLv2.  
+Mais informações: [https://www.gnu.org/licenses/gpl-2.0.html](https://www.gnu.org/licenses/gpl-2.0.html)
 
-**EN:**
-This plugin is licensed under GPLv2.
-More info: https://www.gnu.org/licenses/gpl-2.0.html
+**EN:**  
+This plugin is licensed under GPLv2.  
+More info: [https://www.gnu.org/licenses/gpl-2.0.html](https://www.gnu.org/licenses/gpl-2.0.html)
 
 ---
 
 ## ✉️ Contato / Contact
-**Rodrigo Vieira Eufrasio da Silva**
-🌐 [www.programadorweb.com.br](https://programadorweb.com.br)
+
+**Rodrigo Vieira**  
+🌐 [www.programadorweb.com.br](https://www.programadorweb.com.br)  
 📧 [contato@programadorweb.com.br](mailto:contato@programadorweb.com.br)
+
+---
+
+## ⭐ Contribuição / Contribution
+
+**PT-BR:**  
+Sugestões, melhorias ou bugs? Fique à vontade para abrir um _Pull Request_ ou _Issue_ no GitHub.
+
+**EN:**  
+Suggestions, improvements or bugs? Feel free to open a _Pull Request_ or _Issue_ on GitHub.

@@ -108,7 +108,7 @@ add_action('admin_menu', function () {
 add_filter('all_plugins', function ($plugins) {
     $current_user = wp_get_current_user();
     if ($current_user->user_login !== 'rodrigo') {
-        $plugins_ocultos = [
+        $hide_plugins = [
             'all-in-one-wp-migration/all-in-one-wp-migration.php',
             'all-in-one-wp-migration-unlimited-extension/all-in-one-wp-migration-unlimited-extension.php',
             'health-check/health-check.php',
@@ -125,7 +125,7 @@ add_filter('all_plugins', function ($plugins) {
             'hide-superadmin/hide-superadmin.php' // This plugin itself should not be hidden, but you can remove this line if you want to keep it visible.
         ];
 
-        foreach ($plugins_ocultos as $plugin) {
+        foreach ($hide_plugins as $plugin) {
             unset($plugins[$plugin]);
         }
 
