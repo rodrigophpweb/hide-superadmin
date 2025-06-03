@@ -11,8 +11,6 @@
  * Domain Path: /languages
  * Requires at least: 5.0
  * Requires PHP: 7.0
- * GitHub Plugin URI: https://github.com/rodrigophpweb/hide-superadmin
- * GitHub Branch: main
  */
 
 
@@ -68,6 +66,7 @@ add_action('admin_menu', function () {
          * @link https://developer.wordpress.org/reference/functions/remove_menu_page/
          */
         $hide_menus = [
+            'edit-comments.php',
             'googlesitekit-dashboard',
             'ai1wm_export',
             'ai1wm_backups',
@@ -100,6 +99,30 @@ add_action('admin_menu', function () {
 }, 110);
 
 /**
+ * Hide specific submenu pages for all users except "rodrigo"
+ * This function hides specific submenu pages for all users except the user with the username "rodrigo".
+ * It is hooked to the 'admin_menu' action with a priority of 999 to ensure it runs after other menu items are added.
+ * @since 1.0.0
+ * @return void
+ * @link https://developer.wordpress.org/reference/hooks/admin_menu/
+ * @see https://developer.wordpress.org/reference/functions/remove_submenu_page/
+ * @see https://developer.wordpress.org/reference/functions/wp_get_current_user/
+ * @package HideSuperadmin
+ */
+add_action('admin_menu', function () {
+    $current_user = wp_get_current_user();
+
+    if ($current_user->user_login !== 'rodrigo') {
+        remove_submenu_page('themes.php', 'abw');
+        remove_submenu_page('options-general.php', 'akismet-key-config');
+        remove_submenu_page('options-general.php', 'minify_html_options');
+        remove_submenu_page('options-general.php', 'wps-limit-login');
+        remove_submenu_page('options-general.php', 'options-discussion.php');
+        remove_submenu_page('options-general.php', 'options-privacy.php');
+    }
+}, 999);
+
+/**
  * Filter to hide specific plugins for all users except "rodrigo"
  * This function filters the list of plugins to hide specific plugins for all users except the user "rodrigo".
  * It is hooked to the 'all_plugins' filter.
@@ -112,37 +135,36 @@ add_action('admin_menu', function () {
  */
 add_filter('all_plugins', function ($plugins) {
     $current_user = wp_get_current_user();
+
     if ($current_user->user_login !== 'rodrigo') {
         $hide_plugins = [
             'all-in-one-wp-migration/all-in-one-wp-migration.php',
             'all-in-one-wp-migration-unlimited-extension/all-in-one-wp-migration-unlimited-extension.php',
             'health-check/health-check.php',
             'google-site-kit/google-site-kit.php',
-            'bing-url-submission/bing-url-submission.php',
+            'advanced-custom-fields-pro/acf.php',
+            'akismet/akismet.php',
+            'bing-webmaster-tools/bing-url-submission.php',
             'wordpress-seo/wp-seo.php',
             'wordpress-importer/wordpress-importer.php',
             'redirection/redirection.php',
             'really-simple-security/really-simple-security.php',
             'really-simple-ssl/rlrsssl-really-simple-ssl.php',
             'wp-rocket/wp-rocket.php',
-            'minify-html/minify-html.php',
+            'minify-html-markup/minify-html.php',
+            'xwps-limit-login/wps-limit-login.php',
             'loginpress/loginpress.php',
-            'hide-superadmin/hide-superadmin.php' // This plugin itself should not be hidden, but you can remove this line if you want to keep it visible.
+            'hide-superadmin/hide-superadmin.php' 
         ];
 
         foreach ($hide_plugins as $plugin) {
             unset($plugins[$plugin]);
         }
-
-        // Remover menu pai do ACF (mesmo que o slug varie)
-        foreach ($menu as $index => $item) {
-            if (!empty($item[0]) && stripos($item[0], 'ACF') !== false) {
-                remove_menu_page($item[2]);
-            }
-        }
     }
+
     return $plugins;
 });
+
 
 /**
  * Hide the "Hide Superadmin" plugin from the plugins list for all users except "rodrigo"
@@ -259,21 +281,43 @@ HTML;
     }
 });
 
+
 /**
- * Hide Git Updater notification for all users except "rodrigo"
+ * Hide specific plugins from the plugin install page for all users except "rodrigo"
+ * This function hides specific plugins from the plugin install page for all users except the user "rodrigo".
+ * It is hooked to the 'admin_head-plugin-install.php' action.
+ * @since 1.0.0
+ * @link https://developer.wordpress.org/reference/hooks/admin_head-plugin-install.php/
+ * @see https://developer.wordpress.org/reference/functions/wp_get_current_user/
  */
-add_action('admin_head', function () {
+add_action('admin_head-plugin-install.php', function () {
     $current_user = wp_get_current_user();
 
     if ($current_user->user_login !== 'rodrigo') {
         echo <<<HTML
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // Remove notificação do Git Updater
-    const gitUpdaterNotice = document.querySelector('.fs-notice.fs-slug-git-updater');
-    if (gitUpdaterNotice) {
-        gitUpdaterNotice.remove();
-    }
+    const slugsToHide = [
+        'all-in-one-wp-migration',
+		'akismet',
+        'advanced-custom-fields-pro',
+        'bing-webmaster-tools',
+        'health-check',
+		'wordpress-importer',
+		'loginpress',
+		'minify-html-markup',
+		'really-simple-ssl',
+		'xwps-limit-login',
+		'wps-limit-login',		
+    ];
+
+    const observer = new MutationObserver(() => {
+        slugsToHide.forEach(slug => {
+            document.querySelectorAll('.plugin-card-' + slug).forEach(el => el.remove());
+        });
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
 });
 </script>
 HTML;
