@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Hide Superadmin
  * Description: Oculta o usuário do nome específico e plugins específicos para todos os usuários, exceto o próprio usuário especificado.
- * Version: 4.0
+ * Version: 7.1
  * Author: Rodrigo Vieira
  * Author URI: https://www.programadorweb.com.br/plugins/hide-superadmin/
  * License: GPL2
@@ -66,6 +66,7 @@ add_action('admin_menu', function () {
          * @link https://developer.wordpress.org/reference/functions/remove_menu_page/
          */
         $hide_menus = [
+            'update-core.php',
             'edit-comments.php',
             'googlesitekit-dashboard',
             'ai1wm_export',
@@ -302,11 +303,15 @@ document.addEventListener('DOMContentLoaded', function () {
 		'akismet',
         'advanced-custom-fields-pro',
         'bing-webmaster-tools',
+        'elementor',
+        'google-site-kit',
         'health-check',
+        'header-footer-elementor',
 		'wordpress-importer',
 		'loginpress',
 		'minify-html-markup',
-		'really-simple-ssl',
+		'seo-by-rank-math',
+        'really-simple-ssl',
 		'xwps-limit-login',
 		'wps-limit-login',		
     ];
@@ -318,6 +323,80 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
+});
+</script>
+HTML;
+    }
+});
+
+/**
+ * Hide the "Appearance > Editor" menu item for all users except "rodrigo"
+ * This function hides the "Appearance > Editor" menu item for all users except the user "ro
+ */
+add_action('admin_head', function () {
+    $current_user = wp_get_current_user();
+
+    if ($current_user->user_login !== 'rodrigo') {
+        echo <<<HTML
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const target = document.querySelector('#menu-appearance > ul > li:nth-child(3)');
+    if (target) {
+        target.remove();
+    }
+});
+</script>
+HTML;
+    }
+});
+
+
+/**
+ * Remove specific widgets from the dashboard for all users except "rodrigo"
+ * This function removes specific widgets from the WordPress dashboard for all users except the user "rodrigo".
+ * It is hooked to the 'wp_dashboard_setup' action.
+ * @since 1.0.0
+ * @link https://developer.wordpress.org/reference/hooks/wp_dashboard_setup/
+ * @see https://developer.wordpress.org/reference/functions/remove_meta_box/
+ * @see https://developer.wordpress.org/reference/functions/wp_get_current_user/
+ */
+add_action('wp_dashboard_setup', function () {
+    $current_user = wp_get_current_user();
+
+    if ($current_user->user_login !== 'rodrigo') {
+        // Remove os widgets do dashboard
+        remove_meta_box('dashboard_site_health', 'dashboard', 'normal');      // Saúde do site
+        remove_meta_box('wps_limit_logindashboard_widget', 'dashboard', 'normal'); // WP Limit Login
+        remove_meta_box('dashboard_primary', 'dashboard', 'side');            // Notícias do WordPress
+    }
+});
+
+
+/**
+ * Remove version information from the admin footer for all users except "rodrigo"
+ * This function removes the version information from the admin footer for all users except the user "rodrigo".
+ * It is hooked to the 'admin_footer' action.
+ * @since 1.0.0
+ * @link https://developer.wordpress.org/reference/hooks/admin_footer/
+ * @see https://developer.wordpress.org/reference/functions/wp_get_current_user/
+ * @see https://developer.wordpress.org/reference/functions/remove_action/
+ * @package HideSuperadmin
+ * @author Rodrigo Vieira
+ * @license GPL2
+ * @license URI https://www.gnu.org/licenses/gpl-2.0.html
+ * @description This code snippet hides the WordPress version information from the admin footer for all users except the user "rodrigo".
+ * It uses JavaScript to remove the version information element from the footer.
+ * This is useful for security purposes, as it prevents revealing the WordPress version to unauthorized users.
+ */
+add_action('admin_footer', function () {
+    $current_user = wp_get_current_user();
+
+    if ($current_user->user_login !== 'rodrigo') {
+        echo <<<HTML
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const version = document.querySelector('#footer-upgrade');
+    if (version) version.remove();
 });
 </script>
 HTML;
